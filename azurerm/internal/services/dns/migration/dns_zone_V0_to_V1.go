@@ -6,11 +6,9 @@ import (
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 	"github.com/terraform-providers/terraform-provider-azurerm/azurerm/helpers/azure"
 	"github.com/terraform-providers/terraform-provider-azurerm/azurerm/internal/clients"
 	"github.com/terraform-providers/terraform-provider-azurerm/azurerm/internal/services/dns/parse"
-	"github.com/terraform-providers/terraform-provider-azurerm/azurerm/internal/services/dns/validate"
 	"github.com/terraform-providers/terraform-provider-azurerm/azurerm/internal/tags"
 )
 
@@ -59,57 +57,49 @@ func DnsZoneV0Schema() *schema.Resource {
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"email": {
-							Type:         schema.TypeString,
-							Required:     true,
-							ValidateFunc: validate.DnsZoneSOARecordEmail,
+							Type:     schema.TypeString,
+							Required: true,
 						},
 
 						"host_name": {
-							Type:         schema.TypeString,
-							Required:     true,
-							ValidateFunc: validation.StringIsNotEmpty,
+							Type:     schema.TypeString,
+							Required: true,
 						},
 
 						"expire_time": {
-							Type:         schema.TypeInt,
-							Optional:     true,
-							Default:      2419200,
-							ValidateFunc: validation.IntAtLeast(0),
+							Type:     schema.TypeInt,
+							Optional: true,
+							Default:  2419200,
 						},
 
 						"minimum_ttl": {
-							Type:         schema.TypeInt,
-							Optional:     true,
-							Default:      300,
-							ValidateFunc: validation.IntAtLeast(0),
+							Type:     schema.TypeInt,
+							Optional: true,
+							Default:  300,
 						},
 
 						"refresh_time": {
-							Type:         schema.TypeInt,
-							Optional:     true,
-							Default:      3600,
-							ValidateFunc: validation.IntAtLeast(0),
+							Type:     schema.TypeInt,
+							Optional: true,
+							Default:  3600,
 						},
 
 						"retry_time": {
-							Type:         schema.TypeInt,
-							Optional:     true,
-							Default:      300,
-							ValidateFunc: validation.IntAtLeast(0),
+							Type:     schema.TypeInt,
+							Optional: true,
+							Default:  300,
 						},
 
 						"serial_number": {
-							Type:         schema.TypeInt,
-							Optional:     true,
-							Default:      1,
-							ValidateFunc: validation.IntAtLeast(0),
+							Type:     schema.TypeInt,
+							Optional: true,
+							Default:  1,
 						},
 
 						"ttl": {
-							Type:         schema.TypeInt,
-							Optional:     true,
-							Default:      3600,
-							ValidateFunc: validation.IntBetween(0, 2147483647),
+							Type:     schema.TypeInt,
+							Optional: true,
+							Default:  3600,
 						},
 
 						"tags": tags.Schema(),
