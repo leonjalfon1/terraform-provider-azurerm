@@ -3,9 +3,10 @@ package containers
 import (
 	"fmt"
 	"log"
-	"regexp"
 	"strings"
 	"time"
+
+	validate2 "github.com/terraform-providers/terraform-provider-azurerm/azurerm/internal/services/containers/validate"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2020-11-01-preview/containerregistry"
 	"github.com/hashicorp/go-azure-helpers/response"
@@ -46,7 +47,7 @@ func resourceContainerRegistry() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: ValidateContainerRegistryName,
+				ValidateFunc: validate2.ContainerRegistryName,
 			},
 
 			"resource_group_name": azure.SchemaResourceGroupName(),
@@ -711,24 +712,6 @@ func resourceContainerRegistryDelete(d *schema.ResourceData, meta interface{}) e
 	}
 
 	return nil
-}
-
-func ValidateContainerRegistryName(v interface{}, k string) (warnings []string, errors []error) {
-	value := v.(string)
-	if !regexp.MustCompile(`^[a-zA-Z0-9]+$`).MatchString(value) {
-		errors = append(errors, fmt.Errorf(
-			"alpha numeric characters only are allowed in %q: %q", k, value))
-	}
-
-	if 5 > len(value) {
-		errors = append(errors, fmt.Errorf("%q cannot be less than 5 characters: %q", k, value))
-	}
-
-	if len(value) >= 50 {
-		errors = append(errors, fmt.Errorf("%q cannot be longer than 50 characters: %q %d", k, value, len(value)))
-	}
-
-	return warnings, errors
 }
 
 func expandNetworkRuleSet(profiles []interface{}) *containerregistry.NetworkRuleSet {
