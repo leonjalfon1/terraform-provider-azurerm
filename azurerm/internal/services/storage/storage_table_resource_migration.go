@@ -20,10 +20,9 @@ func ResourceStorageTableStateResourceV0V1() *schema.Resource {
 				ForceNew: true,
 			},
 			"storage_account_name": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ForceNew:     true,
-				ValidateFunc: ValidateStorageAccountName,
+				Type:     schema.TypeString,
+				Required: true,
+				ForceNew: true,
 			},
 			"resource_group_name": azure.SchemaResourceGroupName(),
 			"acl": {
