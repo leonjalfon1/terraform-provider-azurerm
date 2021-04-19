@@ -4,11 +4,8 @@ import (
 	"log"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 	"github.com/terraform-providers/terraform-provider-azurerm/azurerm/helpers/azure"
-	"github.com/terraform-providers/terraform-provider-azurerm/azurerm/internal/services/cosmos/validate"
 	"github.com/terraform-providers/terraform-provider-azurerm/azurerm/internal/tf/suppress"
 )
 
@@ -16,40 +13,35 @@ func ResourceGremlinGraphUpgradeV0Schema() *schema.Resource {
 	return &schema.Resource{
 		Schema: map[string]*schema.Schema{
 			"name": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ForceNew:     true,
-				ValidateFunc: validate.CosmosEntityName,
+				Type:     schema.TypeString,
+				Required: true,
+				ForceNew: true,
 			},
 
 			"resource_group_name": azure.SchemaResourceGroupName(),
 
 			"account_name": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ForceNew:     true,
-				ValidateFunc: validate.CosmosAccountName,
+				Type:     schema.TypeString,
+				Required: true,
+				ForceNew: true,
 			},
 
 			"database_name": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ForceNew:     true,
-				ValidateFunc: validate.CosmosEntityName,
+				Type:     schema.TypeString,
+				Required: true,
+				ForceNew: true,
 			},
 
 			"throughput": {
-				Type:         schema.TypeInt,
-				Optional:     true,
-				Computed:     true,
-				ValidateFunc: validate.CosmosThroughput,
+				Type:     schema.TypeInt,
+				Optional: true,
+				Computed: true,
 			},
 
 			"partition_key_path": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				ForceNew:     true,
-				ValidateFunc: validation.StringIsNotEmpty,
+				Type:     schema.TypeString,
+				Optional: true,
+				ForceNew: true,
 			},
 
 			"index_policy": {
@@ -68,19 +60,13 @@ func ResourceGremlinGraphUpgradeV0Schema() *schema.Resource {
 							Type:             schema.TypeString,
 							Required:         true,
 							DiffSuppressFunc: suppress.CaseDifference,
-							ValidateFunc: validation.StringInSlice([]string{
-								string(documentdb.Consistent),
-								string(documentdb.Lazy),
-								string(documentdb.None),
-							}, false),
 						},
 
 						"included_paths": {
 							Type:     schema.TypeSet,
 							Optional: true,
 							Elem: &schema.Schema{
-								Type:         schema.TypeString,
-								ValidateFunc: validation.StringIsNotEmpty,
+								Type: schema.TypeString,
 							},
 							Set: schema.HashString,
 						},
@@ -89,8 +75,7 @@ func ResourceGremlinGraphUpgradeV0Schema() *schema.Resource {
 							Type:     schema.TypeSet,
 							Optional: true,
 							Elem: &schema.Schema{
-								Type:         schema.TypeString,
-								ValidateFunc: validation.StringIsNotEmpty,
+								Type: schema.TypeString,
 							},
 							Set: schema.HashString,
 						},
@@ -107,22 +92,16 @@ func ResourceGremlinGraphUpgradeV0Schema() *schema.Resource {
 						"mode": {
 							Type:     schema.TypeString,
 							Required: true,
-							ValidateFunc: validation.StringInSlice([]string{
-								string(documentdb.LastWriterWins),
-								string(documentdb.Custom),
-							}, false),
 						},
 
 						"conflict_resolution_path": {
-							Type:         schema.TypeString,
-							Optional:     true,
-							ValidateFunc: validation.StringIsNotEmpty,
+							Type:     schema.TypeString,
+							Optional: true,
 						},
 
 						"conflict_resolution_procedure": {
-							Type:         schema.TypeString,
-							Optional:     true,
-							ValidateFunc: validation.StringIsNotEmpty,
+							Type:     schema.TypeString,
+							Optional: true,
 						},
 					},
 				},
@@ -139,8 +118,7 @@ func ResourceGremlinGraphUpgradeV0Schema() *schema.Resource {
 							Required: true,
 							ForceNew: true,
 							Elem: &schema.Schema{
-								Type:         schema.TypeString,
-								ValidateFunc: validation.StringIsNotEmpty,
+								Type: schema.TypeString,
 							},
 						},
 					},
